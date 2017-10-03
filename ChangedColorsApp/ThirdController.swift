@@ -9,8 +9,11 @@
 import UIKit
 
 class ThirdController: UIViewController {
-    let paintColourPrice = ["Red": 1.23, "Yellow": 1.55, "Blue": 1.23]
-    var colorList = ["Blue","Yellow","Red"]
+   
+    
+    @IBOutlet weak var meeterSquare: UILabel!
+    let paintColourPrice = ["Red": 1.23, "Yellow": 1.55, "Blue": 1.23, "Others" :1.24]
+    var colorList = ["Blue","Yellow","Red", "Others"]
     @IBOutlet weak var paintingPriceLabel: UILabel!
     @IBOutlet weak var lengthField: UITextField!
     @IBOutlet weak var widthField: UITextField!
@@ -19,19 +22,26 @@ class ThirdController: UIViewController {
     @IBOutlet weak var colorDropDown: UIPickerView!
     
     @IBAction func calculateButton(_ sender: UIButton) {
-        resultField.text = String (format : "%.2f", (Double(lengthField.text!)! * Double(widthField.text!)!))
         
-        func  paintingTotalPriceCalculate () -> String {
-            var priceValue : Double!
-            if  (colortextBox.text)  != nil {
-                priceValue = Double(resultField.text!)! * (paintColourPrice[colortextBox.text!])!
-            } else {
+        if lengthField.text! == "" || widthField.text! == "" || colortextBox.text! == "" {
+            let alert = UIAlertController(title: "Alert", message: "Plese enter a value!", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            
+            resultField.text = String (format : "%.2f", (Double(lengthField.text!)! * Double(widthField.text!)!))
+            
+            func  paintingTotalPriceCalculate () -> String {
+                var priceValue : Double!
+                if  (colortextBox.text)  != nil {
+                    priceValue = Double(resultField.text!)! * (paintColourPrice[colortextBox.text!])!
+                } else {
+                }
+                return String(priceValue)
             }
-            return String(priceValue)
+            paintingPriceLabel.text = paintingTotalPriceCalculate()
         }
-        paintingPriceLabel.text = paintingTotalPriceCalculate()
     }
-    
     
     public func numberOfComponents(in pickerView: UIPickerView) -> Int{
         return 1
@@ -62,6 +72,8 @@ class ThirdController: UIViewController {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        meeterSquare.isHidden = true
+        colorDropDown.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
